@@ -10,14 +10,20 @@ export default function Header() {
           <Trophy className="h-6 w-6 text-primary" />
           <span className="font-headline">GetYourTrials</span>
         </Link>
-        <nav className="flex items-center gap-2 md:gap-4">
-          <Button variant="outline" asChild>
-            <Link href="#">For Athletes</Link>
-          </Button>
-          <Button asChild>
-            <Link href="#">For Sports Clubs</Link>
-          </Button>
+        <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
+          <Link href="#" className="text-foreground/80 hover:text-foreground transition-colors">Home</Link>
+          <Link href="#" className="text-foreground/80 hover:text-foreground transition-colors">Athletes</Link>
+          <Link href="#" className="text-foreground/80 hover:text-foreground transition-colors">Sports Clubs</Link>
+          <Link href="#" className="text-foreground/80 hover:text-foreground transition-colors">About</Link>
         </nav>
+        <div className="flex items-center gap-4">
+            <Button variant="ghost" asChild>
+                <Link href="#">Login</Link>
+            </Button>
+            <Button asChild>
+                <Link href="#">Sign Up</Link>
+            </Button>
+        </div>
       </div>
     </header>
   );
