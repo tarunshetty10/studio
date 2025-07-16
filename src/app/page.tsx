@@ -3,7 +3,6 @@ import Footer from "@/components/layout/footer";
 import HeroSection from "@/components/features/hero-section";
 import HowItWorks from "@/components/features/how-it-works";
 import MotivationalQuote from "@/components/features/motivational-quote";
-import PersonalizedMarketing from "@/components/features/personalized-marketing";
 
 export default function Home() {
   return (
@@ -13,7 +12,6 @@ export default function Home() {
         <HeroSection />
         <HowItWorks />
         <MotivationalQuote />
-        <PersonalizedMarketing />
       </main>
       <Footer />
     </div>
