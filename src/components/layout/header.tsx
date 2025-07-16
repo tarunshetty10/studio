@@ -11,17 +11,17 @@ export default function Header() {
           <span className="font-headline">GetYourTrials</span>
         </Link>
         <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
-          <Link href="#" className="text-foreground/80 hover:text-foreground transition-colors">Home</Link>
-          <Link href="#" className="text-foreground/80 hover:text-foreground transition-colors">Athletes</Link>
+          <Link href="/" className="text-foreground/80 hover:text-foreground transition-colors">Home</Link>
+          <Link href="/athletes" className="text-foreground/80 hover:text-foreground transition-colors">Athletes</Link>
           <Link href="#" className="text-foreground/80 hover:text-foreground transition-colors">Sports Clubs</Link>
           <Link href="#" className="text-foreground/80 hover:text-foreground transition-colors">About</Link>
         </nav>
         <div className="flex items-center gap-4">
             <Button variant="ghost" asChild>
-                <Link href="#">Login</Link>
+                <Link href="/login">Login</Link>
             </Button>
             <Button asChild>
-                <Link href="#">Sign Up</Link>
+                <Link href="/signup">Sign Up</Link>
             </Button>
         </div>
       </div>
