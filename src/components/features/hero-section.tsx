@@ -5,7 +5,7 @@ import Image from "next/image";
 export default function HeroSection() {
   return (
     <section className="relative h-[60vh] md:h-[80vh] w-full flex items-center justify-center text-white overflow-hidden">
-      <div className="absolute inset-0 z-[-2]">
+      <div className="absolute inset-0 z-0">
         <Image
           src="https://img.freepik.com/premium-photo/children-playing-football-green-field_62292-15.jpg"
           alt="Kids playing soccer"
@@ -14,8 +14,8 @@ export default function HeroSection() {
           className="w-full h-full"
           data-ai-hint="children playing soccer"
         />
+        <div className="absolute inset-0 bg-black/60" />
       </div>
-      <div className="absolute inset-0 bg-black/60 z-[-1]" />
       <div className="relative z-10 container mx-auto px-4 md:px-6 text-center">
         <h1 className="text-4xl md:text-6xl font-bold mb-4 font-headline animate-fade-in-up text-glow">
           Unlock Your Potential. Find Your Trial.
