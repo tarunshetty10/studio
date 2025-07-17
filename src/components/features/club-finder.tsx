@@ -64,6 +64,14 @@ const mockClubs = [
     location: "Mumbai, Maharashtra",
     verified: true,
   },
+  {
+    id: 5,
+    name: "Mumbai City FC Youth",
+    logo: "https://placehold.co/100x100.png",
+    sport: "Football",
+    location: "Mumbai, Maharashtra",
+    verified: true,
+  },
 ];
 
 export default function ClubFinder() {
