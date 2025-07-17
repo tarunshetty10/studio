@@ -28,7 +28,7 @@ export default function HeroSection() {
             <Link href="/athletes">Register as Athlete</Link>
           </Button>
           <Button size="lg" variant="secondary" asChild className="transition-transform hover:scale-105">
-            <Link href="#">Register a Club</Link>
+            <Link href="#">Find a Club</Link>
           </Button>
         </div>
       </div>
