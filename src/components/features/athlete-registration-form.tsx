@@ -20,6 +20,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Separator } from "@/components/ui/separator";
+import { registerAthlete } from "@/app/actions";
 
 const athleteSchema = z.object({
   fullName: z.string().min(1, "Full Name is required"),
@@ -46,13 +47,21 @@ export default function AthleteRegistrationForm() {
     },
   });
 
-  const onSubmit: SubmitHandler<AthleteFormValues> = (data) => {
-    console.log(data);
-    toast({
-      title: "Registration Submitted!",
-      description: "Your profile will be reviewed. We'll be in touch!",
-    });
-    form.reset();
+  const onSubmit: SubmitHandler<AthleteFormValues> = async (data) => {
+    const result = await registerAthlete(data);
+    if (result.success) {
+      toast({
+        title: "Registration Submitted!",
+        description: "Your profile has been saved. We'll be in touch!",
+      });
+      form.reset();
+    } else {
+      toast({
+        title: "Registration Failed",
+        description: result.error,
+        variant: "destructive",
+      });
+    }
   };
 
   return (

@@ -1,5 +1,3 @@
-// src/ai/flows/generate-motivational-quote.ts
-'use server';
 
 /**
  * @fileOverview Generates a motivational quote for young athletes.
