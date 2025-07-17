@@ -89,7 +89,7 @@ export default function PersonalizedMarketing() {
                 <CardDescription>The AI-generated content will appear here.</CardDescription>
               </CardHeader>
               <CardContent>
-                  <div className="bg-muted rounded-lg p-6 min-h-[290px] text-muted-foreground flex items-center justify-center">
+                  <div className="bg-muted rounded-lg p-6 text-muted-foreground flex items-center justify-center">
                       {isSubmitting ? (
                           <Loader2 className="h-8 w-8 animate-spin text-primary"/>
                       ) : personalizedContent ? (
