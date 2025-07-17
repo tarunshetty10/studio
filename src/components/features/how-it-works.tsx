@@ -34,7 +34,7 @@ export default function HowItWorks() {
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {steps.map((step, index) => (
-            <Card key={index} className="text-center bg-background hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-2">
+            <Card key={index} className="text-center bg-background hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 hover:shadow-[0_0_25px_rgba(255,255,255,0.3)]">
               <CardHeader>
                 <div className="mx-auto bg-primary/10 p-4 rounded-full w-fit">
                   <step.icon className="h-8 w-8 text-primary" />
