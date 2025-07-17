@@ -5,7 +5,7 @@ import Image from "next/image";
 export default function HeroSection() {
   return (
     <section className="relative h-[60vh] md:h-[80vh] w-full flex items-center justify-center text-white overflow-hidden">
-      <div className="absolute top-0 left-0 w-full h-full z-[-1]">
+      <div className="absolute top-0 left-0 w-full h-full z-[-2]">
         <video
           autoPlay
           loop
@@ -18,9 +18,9 @@ export default function HeroSection() {
           Your browser does not support the video tag.
         </video>
       </div>
-      <div className="absolute inset-0 bg-black/60 z-0" />
+      <div className="absolute inset-0 bg-black/60 z-[-1]" />
       <div className="relative z-10 container mx-auto px-4 md:px-6 text-center">
-        <h1 className="text-4xl md:text-6xl font-bold mb-4 font-headline animate-fade-in-up">
+        <h1 className="text-4xl md:text-6xl font-bold mb-4 font-headline animate-fade-in-up text-glow">
           Unlock Your Potential. Find Your Trial.
         </h1>
         <p className="text-lg md:text-xl max-w-3xl mx-auto mb-8 animate-fade-in-up" style={{ animationDelay: '200ms' }}>

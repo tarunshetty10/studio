@@ -8,20 +8,20 @@ export default function Header() {
       <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
         <Link href="/" className="flex items-center gap-2 font-bold text-lg">
           <Trophy className="h-6 w-6 text-primary" />
-          <span className="font-headline">GetYourTrials</span>
+          <span className="font-headline text-glow">GetYourTrials</span>
         </Link>
         <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
-          <Link href="/" className="text-foreground/80 hover:text-foreground transition-colors">Home</Link>
-          <Link href="/athletes" className="text-foreground/80 hover:text-foreground transition-colors">Athletes</Link>
-          <Link href="#" className="text-foreground/80 hover:text-foreground transition-colors">Sports Clubs</Link>
-          <Link href="#" className="text-foreground/80 hover:text-foreground transition-colors">About</Link>
+          <Link href="/" className="text-foreground/80 hover:text-foreground transition-colors hover:text-glow">Home</Link>
+          <Link href="/athletes" className="text-foreground/80 hover:text-foreground transition-colors hover:text-glow">Athletes</Link>
+          <Link href="#" className="text-foreground/80 hover:text-foreground transition-colors hover:text-glow">Sports Clubs</Link>
+          <Link href="#" className="text-foreground/80 hover:text-foreground transition-colors hover:text-glow">About</Link>
         </nav>
         <div className="flex items-center gap-4">
             <Button variant="ghost" asChild>
-                <Link href="/login">Login</Link>
+                <Link href="/login" className="hover:text-glow">Login</Link>
             </Button>
             <Button asChild>
-                <Link href="/signup">Sign Up</Link>
+                <Link href="/signup" className="hover:text-glow">Sign Up</Link>
             </Button>
         </div>
       </div>

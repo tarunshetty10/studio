@@ -40,7 +40,7 @@ export default function MotivationalQuote() {
         <Card className="max-w-3xl mx-auto shadow-lg border-2 border-primary/20">
           <CardHeader className="text-center">
             <Sparkles className="mx-auto h-10 w-10 text-primary mb-2" />
-            <CardTitle className="text-3xl font-headline">Need a Boost?</CardTitle>
+            <CardTitle className="text-3xl font-headline text-glow">Need a Boost?</CardTitle>
             <CardDescription className="text-lg">Generate a motivational quote to keep you going.</CardDescription>
           </CardHeader>
           <CardContent>
