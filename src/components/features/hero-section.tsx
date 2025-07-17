@@ -15,8 +15,8 @@ export default function HeroSection() {
         <source src="https://firebasestorage.googleapis.com/v0/b/genkit-llm-3a479.appspot.com/o/157833-875933923_small.mp4?alt=media&token=c23b3136-1e0e-4735-a6a9-0099450c058c" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
-      <div className="absolute inset-0 bg-black/60 -z-10" />
-      <div className="container mx-auto px-4 md:px-6 text-center">
+      <div className="absolute inset-0 bg-black/60" />
+      <div className="relative container mx-auto px-4 md:px-6 text-center">
         <h1 className="text-4xl md:text-6xl font-bold mb-4 font-headline animate-fade-in-up">
           Unlock Your Potential. Find Your Trial.
         </h1>
