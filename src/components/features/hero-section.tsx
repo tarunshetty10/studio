@@ -5,18 +5,15 @@ import Image from "next/image";
 export default function HeroSection() {
   return (
     <section className="relative h-[60vh] md:h-[80vh] w-full flex items-center justify-center text-white overflow-hidden">
-      <div className="absolute top-0 left-0 w-full h-full z-[-2]">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="w-full h-full object-cover"
-          poster="https://placehold.co/1920x1080.png"
-        >
-          <source src="https://firebasestorage.googleapis.com/v0/b/genkit-llm-3a479.appspot.com/o/157833-875933923_small.mp4?alt=media&token=c23b3136-1e0e-4735-a6a9-0099450c058c" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
+      <div className="absolute inset-0 z-[-2]">
+        <Image
+          src="https://img.freepik.com/premium-photo/children-playing-football-green-field_62292-15.jpg"
+          alt="Kids playing soccer"
+          layout="fill"
+          objectFit="cover"
+          className="w-full h-full"
+          data-ai-hint="children playing soccer"
+        />
       </div>
       <div className="absolute inset-0 bg-black/60 z-[-1]" />
       <div className="relative z-10 container mx-auto px-4 md:px-6 text-center">
