@@ -105,16 +105,12 @@ export default function HelpCenter() {
               </div>
               {form.formState.errors.query && <p className="text-sm text-yellow-300 mt-2">{form.formState.errors.query.message}</p>}
             </form>
-            <div className={`transition-opacity duration-300 ${isSearchHovered ? 'opacity-100' : 'opacity-0'}`}>
-                {isSearchHovered && (
-                    <div className="mt-4 flex flex-wrap justify-center gap-2">
-                        {suggestedQuestions.map((q) => (
-                            <Button key={q} variant="outline" size="sm" onClick={() => handleSuggestedQuestion(q)} disabled={isLoading}>
-                                {q}
-                            </Button>
-                        ))}
-                    </div>
-                )}
+            <div className={`mt-4 flex flex-wrap justify-center gap-2 transition-opacity duration-500 delay-100 ${isSearchHovered ? 'opacity-100' : 'opacity-0'}`}>
+                {suggestedQuestions.map((q) => (
+                    <Button key={q} variant="outline" size="sm" onClick={() => handleSuggestedQuestion(q)} disabled={isLoading}>
+                        {q}
+                    </Button>
+                ))}
             </div>
           </div>
         </div>
