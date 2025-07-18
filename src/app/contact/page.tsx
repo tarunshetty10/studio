@@ -1,3 +1,5 @@
+"use client";
+
 import ContactForm from "@/components/features/contact-form";
 import Footer from "@/components/layout/footer";
 import Header from "@/components/layout/header";

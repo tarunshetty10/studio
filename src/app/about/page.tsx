@@ -1,3 +1,5 @@
+"use client";
+
 import AboutSection from "@/components/features/about-section";
 import Footer from "@/components/layout/footer";
 import Header from "@/components/layout/header";

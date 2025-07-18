@@ -1,3 +1,5 @@
+"use client";
+
 import ClubFinder from "@/components/features/club-finder";
 import Footer from "@/components/layout/footer";
 import Header from "@/components/layout/header";
