@@ -18,8 +18,8 @@ export default function Footer() {
           <div className="col-span-1">
             <h3 className="font-bold mb-4 font-headline">For Athletes</h3>
             <ul className="space-y-2">
-              <li><Link href="#" className="text-sm hover:underline text-muted-foreground transition-colors hover:text-foreground">Create Profile</Link></li>
-              <li><Link href="#" className="text-sm hover:underline text-muted-foreground transition-colors hover:text-foreground">Find Clubs</Link></li>
+              <li><Link href="/athletes" className="text-sm hover:underline text-muted-foreground transition-colors hover:text-foreground">Create Profile</Link></li>
+              <li><Link href="/clubs" className="text-sm hover:underline text-muted-foreground transition-colors hover:text-foreground">Find Clubs</Link></li>
               <li><Link href="#" className="text-sm hover:underline text-muted-foreground transition-colors hover:text-foreground">Apply for Trials</Link></li>
             </ul>
           </div>
@@ -34,7 +34,7 @@ export default function Footer() {
           <div className="col-span-1">
             <h3 className="font-bold mb-4 font-headline">Support</h3>
             <ul className="space-y-2">
-              <li><Link href="#" className="text-sm hover:underline text-muted-foreground transition-colors hover:text-foreground">Help Center</Link></li>
+              <li><Link href="/help-center" className="text-sm hover:underline text-muted-foreground transition-colors hover:text-foreground">Help Center</Link></li>
               <li><Link href="#" className="text-sm hover:underline text-muted-foreground transition-colors hover:text-foreground">Contact Us</Link></li>
               <li><Link href="#" className="text-sm hover:underline text-muted-foreground transition-colors hover:text-foreground">Terms of Service</Link></li>
             </ul>
