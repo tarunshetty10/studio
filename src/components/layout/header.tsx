@@ -29,8 +29,8 @@ export default function Header() {
               key={link.href}
               href={link.href}
               className={cn(
-                "text-foreground/80 hover:text-foreground transition-colors hover:text-glow",
-                pathname === link.href && "text-foreground text-glow"
+                "nav-link-underline text-foreground/80 hover:text-foreground transition-colors",
+                pathname === link.href ? "active text-foreground text-glow" : "hover:text-glow"
               )}
             >
               {link.label}
