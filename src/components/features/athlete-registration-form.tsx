@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/form";
 import { Separator } from "@/components/ui/separator";
 import { registerAthlete } from "@/app/actions";
+import React from "react";
 
 const athleteSchema = z.object({
   fullName: z.string().min(1, "Full Name is required"),
@@ -62,6 +63,12 @@ export default function AthleteRegistrationForm() {
         variant: "destructive",
       });
     }
+  };
+
+  const handleTextareaInput = (event: React.FormEvent<HTMLTextAreaElement>) => {
+    const textarea = event.currentTarget;
+    textarea.style.height = "auto";
+    textarea.style.height = `${textarea.scrollHeight}px`;
   };
 
   return (
@@ -171,14 +178,14 @@ export default function AthleteRegistrationForm() {
                    <FormField control={form.control} name="achievements" render={({ field }) => (
                     <FormItem>
                       <FormLabel>Key Achievements</FormLabel>
-                      <FormControl><Textarea placeholder="List your major achievements, awards, or recognitions..." {...field} /></FormControl>
+                      <FormControl><Textarea className="resize-none overflow-hidden" onInput={handleTextareaInput} placeholder="List your major achievements, awards, or recognitions..." {...field} /></FormControl>
                       <FormMessage />
                     </FormItem>
                   )} />
                    <FormField control={form.control} name="about" render={({ field }) => (
                     <FormItem>
                       <FormLabel>About You</FormLabel>
-                      <FormControl><Textarea placeholder="Tell us about yourself, your goals, and what makes you unique..." {...field} /></FormControl>
+                      <FormControl><Textarea className="resize-none overflow-hidden" onInput={handleTextareaInput} placeholder="Tell us about yourself, your goals, and what makes you unique..." {...field} /></FormControl>
                       <FormMessage />
                     </FormItem>
                   )} />
