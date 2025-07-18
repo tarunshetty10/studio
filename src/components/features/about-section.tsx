@@ -21,7 +21,7 @@ export default function AboutSection() {
           </h1>
           <div className="h-0.5 bg-primary w-24 mb-6 animate-wipe-in" style={{ animationDelay: '200ms' }} />
           <p className="text-lg md:text-xl mb-6 animate-fade-in-up" style={{ animationDelay: '400ms' }}>
-            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt.
+            Our mission is to bridge the gap between talented young athletes and professional sports clubs. We provide a platform for you to showcase your skills, connect with scouts, and find trial opportunities that can launch your career.
           </p>
           <p className="text-muted-foreground animate-fade-in-up" style={{ animationDelay: '600ms' }}>
             Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut.
