@@ -45,6 +45,14 @@ export default function AthleteRegistrationForm() {
   const form = useForm<AthleteFormValues>({
     resolver: zodResolver(athleteSchema),
     defaultValues: {
+      fullName: "",
+      age: 0,
+      email: "",
+      phone: "",
+      location: "",
+      primarySport: "",
+      highestLevel: "",
+      experience: 0,
       achievements: "",
       about: "",
     },
