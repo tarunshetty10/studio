@@ -24,7 +24,7 @@ export default function AboutSection() {
             Our mission is to bridge the gap between talented young athletes and professional sports clubs. We provide a platform for you to showcase your skills, connect with scouts, and find trial opportunities that can launch your career.
           </p>
           <p className="text-muted-foreground animate-fade-in-up" style={{ animationDelay: '600ms' }}>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut.
+            We believe that greatness is born in small moments—the extra hour of practice, the courage to apply, and the resilience to come back stronger. We're more than a platform; we're a community celebrating every step of your journey.
           </p>
         </div>
       </div>
