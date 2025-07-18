@@ -49,6 +49,7 @@ const suggestedQuestions = [
 export default function HelpCenter() {
   const [isLoading, setIsLoading] = useState(false);
   const [answer, setAnswer] = useState("");
+  const [isSearchHovered, setIsSearchHovered] = useState(false);
   const { toast } = useToast();
 
   const form = useForm<SearchFormValues>({
@@ -85,26 +86,36 @@ export default function HelpCenter() {
           <h1 className="text-4xl md:text-5xl font-bold mb-4 font-headline">
             What can we help you with?
           </h1>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="max-w-2xl mx-auto mt-8">
-            <div className="relative">
-              <Input
-                {...form.register("query")}
-                placeholder="Ask a question or search by keyword"
-                className="w-full h-14 pl-6 pr-14 text-lg bg-background text-primary-foreground"
-                disabled={isLoading}
-              />
-              <Button type="submit" size="icon" className="absolute right-3 top-1/2 -translate-y-1/2 h-10 w-10" disabled={isLoading}>
-                {isLoading ? <Loader2 className="animate-spin" /> : <Search />}
-              </Button>
-            </div>
-            {form.formState.errors.query && <p className="text-sm text-yellow-300 mt-2">{form.formState.errors.query.message}</p>}
-          </form>
-          <div className="mt-4 flex flex-wrap justify-center gap-2">
-            {suggestedQuestions.map((q) => (
-                <Button key={q} variant="outline" size="sm" onClick={() => handleSuggestedQuestion(q)} disabled={isLoading}>
-                    {q}
+          <div 
+            className="max-w-2xl mx-auto mt-8"
+            onMouseEnter={() => setIsSearchHovered(true)}
+            onMouseLeave={() => setIsSearchHovered(false)}
+          >
+            <form onSubmit={form.handleSubmit(onSubmit)}>
+              <div className="relative">
+                <Input
+                  {...form.register("query")}
+                  placeholder="Ask a question or search by keyword"
+                  className="w-full h-14 pl-6 pr-14 text-lg bg-background text-primary-foreground"
+                  disabled={isLoading}
+                />
+                <Button type="submit" size="icon" className="absolute right-3 top-1/2 -translate-y-1/2 h-10 w-10" disabled={isLoading}>
+                  {isLoading ? <Loader2 className="animate-spin" /> : <Search />}
                 </Button>
-            ))}
+              </div>
+              {form.formState.errors.query && <p className="text-sm text-yellow-300 mt-2">{form.formState.errors.query.message}</p>}
+            </form>
+            <div className={`transition-opacity duration-300 ${isSearchHovered ? 'opacity-100' : 'opacity-0'}`}>
+                {isSearchHovered && (
+                    <div className="mt-4 flex flex-wrap justify-center gap-2">
+                        {suggestedQuestions.map((q) => (
+                            <Button key={q} variant="outline" size="sm" onClick={() => handleSuggestedQuestion(q)} disabled={isLoading}>
+                                {q}
+                            </Button>
+                        ))}
+                    </div>
+                )}
+            </div>
           </div>
         </div>
       </section>
