@@ -1,7 +1,8 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Trophy } from "lucide-react";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Menu, Trophy } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -37,13 +38,53 @@ export default function Header() {
             </Link>
           ))}
         </nav>
-        <div className="flex items-center gap-4">
+        <div className="hidden md:flex items-center gap-4">
             <Button variant="ghost" asChild>
                 <Link href="/login" className="hover:text-glow">Login</Link>
             </Button>
             <Button asChild>
                 <Link href="/signup" className="hover:text-glow">Sign Up</Link>
             </Button>
+        </div>
+        <div className="md:hidden">
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon">
+                <Menu className="h-6 w-6" />
+                <span className="sr-only">Toggle navigation menu</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left">
+              <div className="flex flex-col gap-6 p-6">
+                <Link href="/" className="flex items-center gap-2 font-bold text-lg">
+                  <Trophy className="h-6 w-6 text-primary" />
+                  <span className="font-headline text-glow">GetYourTrials</span>
+                </Link>
+                <nav className="flex flex-col gap-4">
+                  {navLinks.map((link) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      className={cn(
+                        "text-lg font-medium",
+                        pathname === link.href ? "text-primary" : "text-foreground/80"
+                      )}
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+                </nav>
+                <div className="flex flex-col gap-4 mt-auto">
+                    <Button asChild>
+                        <Link href="/login">Login</Link>
+                    </Button>
+                    <Button variant="secondary" asChild>
+                        <Link href="/signup">Sign Up</Link>
+                    </Button>
+                </div>
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
     </header>
