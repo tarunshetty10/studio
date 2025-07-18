@@ -7,12 +7,12 @@ export default function AboutSection() {
         <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
           <div className="relative w-full h-80 md:h-[500px] rounded-lg overflow-hidden shadow-lg">
             <Image
-              src="https://img.freepik.com/free-photo/soccer-player-girl-with-ball-white-background_1303-27757.jpg"
-              alt="Young girl holding a football"
+              src="https://images.unsplash.com/photo-1595532770655-68b23fe6b2f1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxjaGlsZCUyMGJhc2ViYWxsfGVufDB8fHx8MTc1Mjg1NDE1OHww&ixlib=rb-4.1.0&q=80&w=1080"
+              alt="Young child playing baseball"
               fill
               style={{objectFit: "cover"}}
               className="w-full h-full"
-              data-ai-hint="girl football"
+              data-ai-hint="child baseball"
             />
           </div>
           <div className="text-left">

@@ -27,6 +27,12 @@ const nextConfig: NextConfig = {
         hostname: 'sdmntprwestus.oaiusercontent.com',
         port: '',
         pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+        port: '',
+        pathname: '/**',
       }
     ],
   },
