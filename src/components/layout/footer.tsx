@@ -35,7 +35,7 @@ export default function Footer() {
             <h3 className="font-bold mb-4 font-headline">Support</h3>
             <ul className="space-y-2">
               <li><Link href="/help-center" className="text-sm hover:underline text-muted-foreground transition-colors hover:text-foreground">Help Center</Link></li>
-              <li><Link href="#" className="text-sm hover:underline text-muted-foreground transition-colors hover:text-foreground">Contact Us</Link></li>
+              <li><Link href="/contact" className="text-sm hover:underline text-muted-foreground transition-colors hover:text-foreground">Contact Us</Link></li>
               <li><Link href="#" className="text-sm hover:underline text-muted-foreground transition-colors hover:text-foreground">Terms of Service</Link></li>
             </ul>
           </div>

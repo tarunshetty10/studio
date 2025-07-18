@@ -46,3 +46,17 @@ export async function registerAthlete(athleteData: any) {
     return { success: false, error: (e as Error).message };
   }
 }
+
+export async function submitContactForm(contactData: any) {
+  try {
+    // Here you would typically send an email or save to a database.
+    // For now, we'll just log it to the console.
+    console.log("New contact form submission:", contactData);
+    const docRef = await addDoc(collection(db, "contacts"), contactData);
+    console.log("Contact form submission saved with ID: ", docRef.id);
+    return { success: true };
+  } catch (e) {
+    console.error("Error submitting contact form: ", e);
+    return { success: false, error: (e as Error).message };
+  }
+}
