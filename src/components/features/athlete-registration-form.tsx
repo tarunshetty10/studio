@@ -66,7 +66,7 @@ export default function AthleteRegistrationForm() {
 
   return (
     <div className="py-12 md:py-16">
-      <Card className="max-w-4xl mx-auto p-4 sm:p-6 md:p-8 shadow-2xl bg-card">
+      <Card className="max-w-lg w-full mx-auto p-4 sm:p-6 md:p-8 shadow-2xl bg-card">
         <CardHeader className="text-center">
           <CardTitle className="text-3xl md:text-4xl font-headline">Athlete Registration</CardTitle>
           <CardDescription className="text-md md:text-lg text-muted-foreground">
