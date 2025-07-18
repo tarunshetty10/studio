@@ -79,7 +79,7 @@ export default function HelpCenter() {
               <Input
                 {...form.register("query")}
                 placeholder="Ask a question or search by keyword"
-                className="w-full h-14 pl-6 pr-14 text-lg bg-primary-foreground text-foreground"
+                className="w-full h-14 pl-6 pr-14 text-lg bg-background text-primary-foreground"
                 disabled={isLoading}
               />
               <Button type="submit" size="icon" className="absolute right-3 top-1/2 -translate-y-1/2 h-10 w-10" disabled={isLoading}>
