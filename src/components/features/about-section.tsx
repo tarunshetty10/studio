@@ -2,30 +2,31 @@ import Image from "next/image";
 
 export default function AboutSection() {
   return (
-    <section className="relative h-[80vh] w-full flex items-center justify-center text-white overflow-hidden">
-      <div className="absolute inset-0 z-0">
-        <Image
-          src="https://sdmntprwestus.oaiusercontent.com/files/00000000-9098-6230-90c3-92112e1e1371/raw?se=2025-07-18T15%3A16%3A54Z&sp=r&sv=2024-08-04&sr=b&scid=1d3afd37-eb43-5a69-9158-4ed77debb595&skoid=1e6af1bf-6b08-4a04-8919-15773e7e7024&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-07-18T13%3A57%3A13Z&ske=2025-07-19T13%3A57%3A13Z&sks=b&skv=2024-08-04&sig=djMDEVpAA96MHIP134zhGXmVsqZU1B90PmPzNPCTjE8%3D"
-          alt="Young girl holding a football"
-          fill
-          style={{objectFit: "cover"}}
-          className="w-full h-full"
-          data-ai-hint="girl football"
-        />
-        <div className="absolute inset-0 bg-black/50" />
-      </div>
-      <div className="relative z-10 container mx-auto px-4 md:px-6 grid md:grid-cols-2 gap-8 items-center">
-        <div className="md:col-start-2 text-left">
-          <h1 className="text-4xl md:text-5xl font-bold mb-2 font-headline text-glow animate-fade-in-up">
-            ABOUT US
-          </h1>
-          <div className="h-0.5 bg-primary w-24 mb-6 animate-wipe-in" style={{ animationDelay: '200ms' }} />
-          <p className="text-lg md:text-xl mb-6 animate-fade-in-up" style={{ animationDelay: '400ms' }}>
-            Our mission is to bridge the gap between talented young athletes and professional sports clubs. We provide a platform for you to showcase your skills, connect with scouts, and find trial opportunities that can launch your career.
-          </p>
-          <p className="text-muted-foreground animate-fade-in-up" style={{ animationDelay: '600ms' }}>
-            We believe that greatness is born in small moments—the extra hour of practice, the courage to apply, and the resilience to come back stronger. We're more than a platform; we're a community celebrating every step of your journey.
-          </p>
+    <section className="bg-background">
+      <div className="container mx-auto px-4 md:px-6 py-12 md:py-24">
+        <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+          <div className="relative w-full h-80 md:h-[500px] rounded-lg overflow-hidden shadow-lg">
+            <Image
+              src="https://img.freepik.com/free-photo/soccer-player-girl-with-ball-white-background_1303-27757.jpg"
+              alt="Young girl holding a football"
+              fill
+              style={{objectFit: "cover"}}
+              className="w-full h-full"
+              data-ai-hint="girl football"
+            />
+          </div>
+          <div className="text-left">
+            <h1 className="text-4xl md:text-5xl font-bold mb-2 font-headline text-primary text-glow animate-fade-in-up">
+              ABOUT US
+            </h1>
+            <div className="h-0.5 bg-primary w-24 mb-6 animate-wipe-in" style={{ animationDelay: '200ms' }} />
+            <p className="text-lg md:text-xl mb-6 text-foreground/90 animate-fade-in-up" style={{ animationDelay: '400ms' }}>
+              Our mission is to bridge the gap between talented young athletes and professional sports clubs. We provide a platform for you to showcase your skills, connect with scouts, and find trial opportunities that can launch your career.
+            </p>
+            <p className="text-muted-foreground animate-fade-in-up" style={{ animationDelay: '600ms' }}>
+              We believe that greatness is born in small moments—the extra hour of practice, the courage to apply, and the resilience to come back stronger. We're more than a platform; we're a community celebrating every step of your journey.
+            </p>
+          </div>
         </div>
       </div>
     </section>
