@@ -19,7 +19,7 @@ export default function AboutSection() {
           <h1 className="text-4xl md:text-5xl font-bold mb-2 font-headline text-glow animate-fade-in-up">
             ABOUT US
           </h1>
-          <hr className="border-primary w-24 mb-6 animate-wipe-in" style={{ animationDelay: '200ms' }} />
+          <div className="h-0.5 bg-primary w-24 mb-6 animate-wipe-in" style={{ animationDelay: '200ms' }} />
           <p className="text-lg md:text-xl mb-6 animate-fade-in-up" style={{ animationDelay: '400ms' }}>
             Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt.
           </p>
