@@ -5,12 +5,12 @@ export default function AboutSection() {
     <section className="relative h-[80vh] w-full flex items-center justify-center text-white overflow-hidden">
       <div className="absolute inset-0 z-0">
         <Image
-          src="https://placehold.co/1200x800.png"
-          alt="Person looking over a landscape"
+          src="https://img.freepik.com/premium-photo/young-girl-holding-football-smiling_911319-3559.jpg"
+          alt="Young girl holding a football"
           layout="fill"
           objectFit="cover"
           className="w-full h-full"
-          data-ai-hint="person landscape sunrise"
+          data-ai-hint="girl football"
         />
         <div className="absolute inset-0 bg-black/50" />
       </div>
