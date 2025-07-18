@@ -16,10 +16,10 @@ export default function AboutSection() {
       </div>
       <div className="relative z-10 container mx-auto px-4 md:px-6 grid md:grid-cols-2 gap-8 items-center">
         <div className="md:col-start-2 text-left">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 font-headline text-glow animate-fade-in-up">
+          <h1 className="text-4xl md:text-5xl font-bold mb-2 font-headline text-glow animate-fade-in-up">
             ABOUT US
           </h1>
-          <hr className="border-primary w-24 mb-6 animate-fade-in-up" style={{ animationDelay: '200ms' }} />
+          <hr className="border-primary w-24 mb-6 animate-wipe-in" style={{ animationDelay: '200ms' }} />
           <p className="text-lg md:text-xl mb-6 animate-fade-in-up" style={{ animationDelay: '400ms' }}>
             Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt.
           </p>

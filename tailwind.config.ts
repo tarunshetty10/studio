@@ -105,11 +105,20 @@ export default {
             transform: 'translateY(0)',
           },
         },
+        'wipe-in': {
+          '0%': {
+            width: '0%',
+          },
+          '100%': {
+            width: '6rem', // w-24
+          },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
-        'fade-in-up': 'fade-in-up 0.6s ease-out forwards',
+        'fade-in-up': 'fade-in-up 1s ease-out forwards',
+        'wipe-in': 'wipe-in 1s ease-out forwards',
       },
     },
   },
