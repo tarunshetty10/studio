@@ -7,8 +7,8 @@ export default function AboutSection() {
         <Image
           src="https://img.freepik.com/premium-photo/young-girl-holding-football-smiling_911319-3559.jpg"
           alt="Young girl holding a football"
-          layout="fill"
-          objectFit="cover"
+          fill
+          style={{objectFit: "cover"}}
           className="w-full h-full"
           data-ai-hint="girl football"
         />
