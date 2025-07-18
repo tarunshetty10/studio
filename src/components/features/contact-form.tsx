@@ -12,22 +12,28 @@ import { Mail } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { submitContactForm } from "@/app/actions";
 import React from "react";
+import { cn } from "@/lib/utils";
 
 const contactSchema = z.object({
   name: z.string().min(1, "Name is required"),
   email: z.string().email("Invalid email address"),
   message: z.string()
     .min(10, "Message must be at least 10 characters long")
-    .max(500, "Message must be no more than 500 characters"),
+    .max(300, "Message must be no more than 300 characters"),
 });
 
 type ContactFormValues = z.infer<typeof contactSchema>;
+
+const MAX_CHARS = 300;
 
 export default function ContactForm() {
   const { toast } = useToast();
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(contactSchema),
   });
+
+  const messageValue = form.watch("message", "");
+  const charsLeft = MAX_CHARS - (messageValue?.length || 0);
 
   const onSubmit: SubmitHandler<ContactFormValues> = async (data) => {
     const result = await submitContactForm(data);
@@ -92,8 +98,19 @@ export default function ContactForm() {
                 rows={3}
                 className="resize-none overflow-hidden"
                 onInput={handleMessageInput}
+                maxLength={MAX_CHARS}
               />
-              {form.formState.errors.message && <p className="text-sm text-destructive">{form.formState.errors.message.message}</p>}
+              <div className="text-right text-sm text-muted-foreground">
+                <span className={cn(
+                  "transition-colors",
+                  { "text-yellow-500": charsLeft <= 50 && charsLeft > 0 },
+                  { "text-destructive": charsLeft <= 0 }
+                )}>
+                  {charsLeft}
+                </span> / {MAX_CHARS}
+                {charsLeft <= 0 && <span className="text-destructive ml-2">Limit reached</span>}
+              </div>
+              {form.formState.errors.message && !messageValue && <p className="text-sm text-destructive">{form.formState.errors.message.message}</p>}
             </div>
             <Button type="submit" className="w-full" size="lg" disabled={form.formState.isSubmitting}>
               {form.formState.isSubmitting ? 'Submitting...' : 'SUBMIT'}
