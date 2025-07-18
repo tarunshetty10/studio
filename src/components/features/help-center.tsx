@@ -40,6 +40,12 @@ const helpTopics = [
   },
 ];
 
+const suggestedQuestions = [
+    "How do I create an athlete profile?",
+    "What kind of sports are available?",
+    "How can I find trials near me?",
+];
+
 export default function HelpCenter() {
   const [isLoading, setIsLoading] = useState(false);
   const [answer, setAnswer] = useState("");
@@ -48,6 +54,11 @@ export default function HelpCenter() {
   const form = useForm<SearchFormValues>({
     resolver: zodResolver(searchSchema),
   });
+
+  const handleSuggestedQuestion = (question: string) => {
+    form.setValue("query", question);
+    onSubmit({ query: question });
+  };
 
   const onSubmit: SubmitHandler<SearchFormValues> = async (data) => {
     setIsLoading(true);
@@ -88,6 +99,13 @@ export default function HelpCenter() {
             </div>
             {form.formState.errors.query && <p className="text-sm text-yellow-300 mt-2">{form.formState.errors.query.message}</p>}
           </form>
+          <div className="mt-4 flex flex-wrap justify-center gap-2">
+            {suggestedQuestions.map((q) => (
+                <Button key={q} variant="outline" size="sm" onClick={() => handleSuggestedQuestion(q)} disabled={isLoading}>
+                    {q}
+                </Button>
+            ))}
+          </div>
         </div>
       </section>
 
