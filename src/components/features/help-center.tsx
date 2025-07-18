@@ -44,6 +44,8 @@ const suggestedQuestions = [
     "How do I create an athlete profile?",
     "What kind of sports are available?",
     "How can I find trials near me?",
+    "What is GetYourTrials?",
+    "How do clubs find athletes?",
 ];
 
 export default function HelpCenter() {
