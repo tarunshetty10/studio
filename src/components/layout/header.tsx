@@ -13,8 +13,8 @@ export default function Header() {
         <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
           <Link href="/" className="text-foreground/80 hover:text-foreground transition-colors hover:text-glow">Home</Link>
           <Link href="/athletes" className="text-foreground/80 hover:text-foreground transition-colors hover:text-glow">Athletes</Link>
-          <Link href="#" className="text-foreground/80 hover:text-foreground transition-colors hover:text-glow">Sports Clubs</Link>
-          <Link href="#" className="text-foreground/80 hover:text-foreground transition-colors hover:text-glow">About</Link>
+          <Link href="/clubs" className="text-foreground/80 hover:text-foreground transition-colors hover:text-glow">Sports Clubs</Link>
+          <Link href="/about" className="text-foreground/80 hover:text-foreground transition-colors hover:text-glow">About</Link>
         </nav>
         <div className="flex items-center gap-4">
             <Button variant="ghost" asChild>
