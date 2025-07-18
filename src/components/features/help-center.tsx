@@ -7,7 +7,7 @@ import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
-import { Rocket, Settings, MessageSquareQuestion, Briefcase, Search, Loader2 } from 'lucide-react';
+import { Rocket, Settings, MessageSquareQuote, Briefcase, Search, Loader2 } from 'lucide-react';
 import { answerHelpQuestion } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
 
@@ -29,7 +29,7 @@ const helpTopics = [
     description: 'Manage your profile, notifications, and other account preferences.',
   },
   {
-    icon: MessageSquareQuestion,
+    icon: MessageSquareQuote,
     title: 'FAQ',
     description: 'Find answers to frequently asked questions about trials and clubs.',
   },
