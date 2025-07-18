@@ -11,11 +11,14 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Mail } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { submitContactForm } from "@/app/actions";
+import React from "react";
 
 const contactSchema = z.object({
   name: z.string().min(1, "Name is required"),
   email: z.string().email("Invalid email address"),
-  message: z.string().min(10, "Message must be at least 10 characters long"),
+  message: z.string()
+    .min(10, "Message must be at least 10 characters long")
+    .max(500, "Message must be no more than 500 characters"),
 });
 
 type ContactFormValues = z.infer<typeof contactSchema>;
@@ -41,6 +44,12 @@ export default function ContactForm() {
         variant: "destructive",
       });
     }
+  };
+
+  const handleMessageInput = (event: React.FormEvent<HTMLTextAreaElement>) => {
+    const textarea = event.currentTarget;
+    textarea.style.height = "auto";
+    textarea.style.height = `${textarea.scrollHeight}px`;
   };
 
   return (
@@ -80,7 +89,9 @@ export default function ContactForm() {
                 id="message"
                 {...form.register("message")}
                 placeholder="Your message"
-                rows={5}
+                rows={3}
+                className="resize-none overflow-hidden"
+                onInput={handleMessageInput}
               />
               {form.formState.errors.message && <p className="text-sm text-destructive">{form.formState.errors.message.message}</p>}
             </div>
