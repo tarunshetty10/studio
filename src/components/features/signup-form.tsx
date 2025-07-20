@@ -267,4 +267,11 @@ export default function SignupForm() {
                 className="text-primary hover:underline font-medium"
               >
                 Sign in here
-              </
+              </Link>
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
