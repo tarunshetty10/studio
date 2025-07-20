@@ -266,7 +266,7 @@ export default function SignupForm() {
                 href="/login"
                 className="text-primary hover:underline font-medium"
               >
-                Sign in here
+                Login here
               </Link>
             </p>
           </div>
