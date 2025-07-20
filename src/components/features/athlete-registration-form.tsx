@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -6,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { User, Trophy, CheckCircle, LogIn, UserPlus } from "lucide-react";
+import { User, Trophy, CheckCircle, LogIn, UserPlus, Youtube } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -45,6 +46,7 @@ const athleteSchema = z.object({
   experience: z.coerce.number().min(0, "Years of Experience is required"),
   achievements: z.string().optional(),
   about: z.string().optional(),
+  youtubeUrl: z.string().url("Please enter a valid URL").optional().or(z.literal('')),
 });
 
 type AthleteFormValues = z.infer<typeof athleteSchema>;
@@ -66,6 +68,7 @@ export default function AthleteRegistrationForm() {
       experience: 0,
       achievements: "",
       about: "",
+      youtubeUrl: "",
     },
   });
 
@@ -232,6 +235,23 @@ export default function AthleteRegistrationForm() {
                         </FormItem>
                       )} />
                   </section>
+
+                  <Separator />
+
+                  <section className="space-y-6">
+                    <div className="flex items-center gap-3">
+                      <Youtube className="w-6 h-6 text-primary" />
+                      <h3 className="text-xl font-semibold font-headline">Sports Highlights</h3>
+                    </div>
+                     <FormField control={form.control} name="youtubeUrl" render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>YouTube Highlights URL</FormLabel>
+                          <FormControl><Input placeholder="https://www.youtube.com/watch?v=..." {...field} /></FormControl>
+                           <p className="text-sm text-muted-foreground">Upload your highlights to YouTube and paste the video URL here.</p>
+                          <FormMessage />
+                        </FormItem>
+                      )} />
+                  </section>
                   
                   <Button type="submit" size="lg" className="w-full" disabled={form.formState.isSubmitting}>
                     {form.formState.isSubmitting ? 'Registering...' : 'Register as Athlete'}
@@ -268,3 +288,5 @@ export default function AthleteRegistrationForm() {
     </>
   );
 }
+
+    
