@@ -20,13 +20,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
 const signupSchema = z
   .object({
@@ -34,7 +27,6 @@ const signupSchema = z
     lastName: z.string().min(1, "Last Name is required"),
     email: z.string().email("Invalid email address"),
     phone: z.string().min(1, "Phone Number is required"),
-    role: z.string().min(1, "Please select a role"),
     password: z
       .string()
       .min(8, "Password must be at least 8 characters long"),
@@ -61,7 +53,6 @@ export default function SignupForm() {
       lastName: "",
       email: "",
       phone: "",
-      role: "",
       password: "",
       confirmPassword: "",
       agreeToTerms: false,
@@ -159,35 +150,6 @@ export default function SignupForm() {
                     <FormControl>
                       <Input placeholder="+1 (555) 123-4567" {...field} />
                     </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="role"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>I am a</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select your role" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="athlete">Athlete</SelectItem>
-                        <SelectItem value="coach">Coach</SelectItem>
-                        <SelectItem value="club-representative">
-                          Club Representative
-                        </SelectItem>
-                        <SelectItem value="scout">Scout</SelectItem>
-                      </SelectContent>
-                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -305,11 +267,4 @@ export default function SignupForm() {
                 className="text-primary hover:underline font-medium"
               >
                 Sign in here
-              </Link>
-            </p>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
-  );
-}
+              </
