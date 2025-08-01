@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -13,6 +14,10 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { User, Eye, EyeOff } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useRouter } from 'next/navigation';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '@/lib/firebase';
+
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -25,6 +30,7 @@ type LoginFormValues = z.infer<typeof loginSchema>;
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const { toast } = useToast();
+  const router = useRouter();
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -34,13 +40,22 @@ export default function LoginForm() {
     },
   });
 
-  const onSubmit: SubmitHandler<LoginFormValues> = (data) => {
-    console.log(data);
-    toast({
-      title: "Login Successful!",
-      description: "Welcome back!",
-    });
-    form.reset();
+  const onSubmit: SubmitHandler<LoginFormValues> = async (data) => {
+    try {
+      await signInWithEmailAndPassword(auth, data.email, data.password);
+      toast({
+        title: "Login Successful!",
+        description: "Welcome back!",
+      });
+      router.push('/');
+    } catch (error) {
+      toast({
+        title: "Login Failed",
+        description: "Invalid email or password. Please try again.",
+        variant: "destructive",
+      });
+      console.error(error);
+    }
   };
 
   return (

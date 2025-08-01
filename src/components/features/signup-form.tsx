@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -20,6 +21,9 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { useRouter } from 'next/navigation';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { auth } from '@/lib/firebase';
 
 const signupSchema = z
   .object({
@@ -46,6 +50,7 @@ export default function SignupForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const { toast } = useToast();
+  const router = useRouter();
   const form = useForm<SignupFormValues>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
@@ -59,13 +64,32 @@ export default function SignupForm() {
     },
   });
 
-  const onSubmit: SubmitHandler<SignupFormValues> = (data) => {
-    console.log(data);
-    toast({
-      title: "Account Created!",
-      description: "Welcome to GetYourTrials!",
-    });
-    form.reset();
+  const onSubmit: SubmitHandler<SignupFormValues> = async (data) => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        data.email,
+        data.password
+      );
+      const user = userCredential.user;
+      await updateProfile(user, {
+        displayName: `${data.firstName} ${data.lastName}`,
+        phoneNumber: data.phone,
+      });
+
+      toast({
+        title: "Account Created!",
+        description: "Welcome to GetYourTrials!",
+      });
+      router.push('/');
+    } catch (error) {
+      toast({
+        title: "Sign-up Failed",
+        description: (error as Error).message,
+        variant: "destructive",
+      });
+      console.error(error);
+    }
   };
 
   return (
