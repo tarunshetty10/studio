@@ -2,10 +2,16 @@
 
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
-import { Menu, Trophy } from "lucide-react";
+import { Menu, Trophy, User as UserIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { useEffect, useState } from "react";
+import { getAuth, onAuthStateChanged, User } from "firebase/auth";
+import { app } from "@/lib/firebase";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { logoutUser } from "@/app/actions";
 
 const navLinks = [
     { href: "/", label: "Home" },
@@ -16,6 +22,25 @@ const navLinks = [
 
 export default function Header() {
   const pathname = usePathname();
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const auth = getAuth(app);
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  const handleLogout = async () => {
+    await logoutUser();
+  };
+
+  const getInitials = (email: string | null | undefined) => {
+    if (!email) return 'U';
+    return email.substring(0, 2).toUpperCase();
+  };
+
 
   return (
     <header className="bg-background/80 backdrop-blur-sm sticky top-0 z-40 border-b">
@@ -39,12 +64,47 @@ export default function Header() {
           ))}
         </nav>
         <div className="hidden md:flex items-center gap-4">
-            <Button variant="ghost" asChild>
-                <Link href="/login" className="hover:text-glow">Login</Link>
-            </Button>
-            <Button asChild>
-                <Link href="/signup" className="hover:text-glow">Sign Up</Link>
-            </Button>
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                    <Avatar className="h-8 w-8">
+                       <AvatarFallback className="bg-primary text-primary-foreground">{getInitials(user.email)}</AvatarFallback>
+                    </Avatar>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56" align="end" forceMount>
+                  <DropdownMenuLabel className="font-normal">
+                    <div className="flex flex-col space-y-1">
+                      <p className="text-sm font-medium leading-none">My Account</p>
+                      <p className="text-xs leading-none text-muted-foreground">
+                        {user.email}
+                      </p>
+                    </div>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>
+                    Profile
+                  </DropdownMenuItem>
+                   <DropdownMenuItem>
+                    Settings
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleLogout}>
+                    Log out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <>
+                <Button variant="ghost" asChild>
+                    <Link href="/login" className="hover:text-glow">Login</Link>
+                </Button>
+                <Button asChild>
+                    <Link href="/signup" className="hover:text-glow">Sign Up</Link>
+                </Button>
+              </>
+            )}
         </div>
         <div className="md:hidden">
           <Sheet>
@@ -76,12 +136,26 @@ export default function Header() {
                   ))}
                 </nav>
                 <div className="flex flex-col gap-4 mt-auto">
-                    <Button asChild>
-                        <Link href="/login">Login</Link>
-                    </Button>
-                    <Button variant="secondary" asChild>
-                        <Link href="/signup">Sign Up</Link>
-                    </Button>
+                    {user ? (
+                       <div className="flex items-center gap-4">
+                         <Avatar>
+                           <AvatarFallback className="bg-primary text-primary-foreground">{getInitials(user.email)}</AvatarFallback>
+                         </Avatar>
+                         <div className="flex flex-col">
+                            <span className="text-sm font-medium">{user.email}</span>
+                            <Button variant="link" className="p-0 h-auto justify-start" onClick={handleLogout}>Logout</Button>
+                         </div>
+                       </div>
+                    ) : (
+                      <>
+                        <Button asChild>
+                            <Link href="/login">Login</Link>
+                        </Button>
+                        <Button variant="secondary" asChild>
+                            <Link href="/signup">Sign Up</Link>
+                        </Button>
+                      </>
+                    )}
                 </div>
               </div>
             </SheetContent>

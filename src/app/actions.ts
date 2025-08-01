@@ -17,7 +17,7 @@ import {
 } from '@/ai/flows/answer-help-question';
 import { db, auth } from '@/lib/firebase';
 import { collection, addDoc } from "firebase/firestore";
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "firebase/auth";
 
 
 export async function generateMotivationalQuote(
@@ -84,6 +84,15 @@ export async function signupUser(userData: any) {
     await addDoc(collection(db, "users"), userDocData);
 
     return { success: true, userId: userCredential.user.uid };
+  } catch (e) {
+    return { success: false, error: (e as Error).message };
+  }
+}
+
+export async function logoutUser() {
+  try {
+    await signOut(auth);
+    return { success: true };
   } catch (e) {
     return { success: false, error: (e as Error).message };
   }
