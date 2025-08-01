@@ -15,8 +15,10 @@ import {
   type AnswerHelpQuestionInput,
   type AnswerHelpQuestionOutput,
 } from '@/ai/flows/answer-help-question';
-import { db } from '@/lib/firebase';
-import { collection, addDoc } from "firebase/firestore"; 
+import { db, auth } from '@/lib/firebase';
+import { collection, addDoc } from "firebase/firestore";
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
+
 
 export async function generateMotivationalQuote(
   input: MotivationalQuoteInput
@@ -49,14 +51,40 @@ export async function registerAthlete(athleteData: any) {
 
 export async function submitContactForm(contactData: any) {
   try {
-    // Here you would typically send an email or save to a database.
-    // For now, we'll just log it to the console.
-    console.log("New contact form submission:", contactData);
     const docRef = await addDoc(collection(db, "contacts"), contactData);
     console.log("Contact form submission saved with ID: ", docRef.id);
     return { success: true };
   } catch (e) {
     console.error("Error submitting contact form: ", e);
+    return { success: false, error: (e as Error).message };
+  }
+}
+
+export async function loginUser(credentials: any) {
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, credentials.email, credentials.password);
+    return { success: true, userId: userCredential.user.uid };
+  } catch (e) {
+    return { success: false, error: (e as Error).message };
+  }
+}
+
+export async function signupUser(userData: any) {
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, userData.email, userData.password);
+    // You can optionally save additional user data to Firestore here
+    // For example, saving firstName and lastName
+    const userDocData = {
+      uid: userCredential.user.uid,
+      firstName: userData.firstName,
+      lastName: userData.lastName,
+      email: userData.email,
+      phone: userData.phone,
+    };
+    await addDoc(collection(db, "users"), userDocData);
+
+    return { success: true, userId: userCredential.user.uid };
+  } catch (e) {
     return { success: false, error: (e as Error).message };
   }
 }

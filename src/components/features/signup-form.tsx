@@ -12,6 +12,8 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { UserPlus, Eye, EyeOff } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { signupUser } from "@/app/actions";
+import { useRouter } from "next/navigation";
 import {
   Form,
   FormControl,
@@ -46,6 +48,7 @@ export default function SignupForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const { toast } = useToast();
+  const router = useRouter();
   const form = useForm<SignupFormValues>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
@@ -59,13 +62,21 @@ export default function SignupForm() {
     },
   });
 
-  const onSubmit: SubmitHandler<SignupFormValues> = (data) => {
-    console.log(data);
-    toast({
-      title: "Account Created!",
-      description: "Welcome to GetYourTrials!",
-    });
-    form.reset();
+  const onSubmit: SubmitHandler<SignupFormValues> = async (data) => {
+    const result = await signupUser(data);
+    if (result.success) {
+      toast({
+        title: "Account Created!",
+        description: "Welcome to GetYourTrials! Please log in.",
+      });
+      router.push("/login");
+    } else {
+      toast({
+        title: "Signup Failed",
+        description: result.error,
+        variant: "destructive",
+      });
+    }
   };
 
   return (

@@ -13,6 +13,9 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { User, Eye, EyeOff } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { loginUser } from "@/app/actions";
+import { useRouter } from "next/navigation";
+
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -25,6 +28,7 @@ type LoginFormValues = z.infer<typeof loginSchema>;
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const { toast } = useToast();
+  const router = useRouter();
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -34,13 +38,21 @@ export default function LoginForm() {
     },
   });
 
-  const onSubmit: SubmitHandler<LoginFormValues> = (data) => {
-    console.log(data);
-    toast({
-      title: "Login Successful!",
-      description: "Welcome back!",
-    });
-    form.reset();
+  const onSubmit: SubmitHandler<LoginFormValues> = async (data) => {
+    const result = await loginUser(data);
+    if (result.success) {
+      toast({
+        title: "Login Successful!",
+        description: "Welcome back!",
+      });
+      router.push("/");
+    } else {
+      toast({
+        title: "Login Failed",
+        description: result.error,
+        variant: "destructive",
+      });
+    }
   };
 
   return (
