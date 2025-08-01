@@ -1,6 +1,5 @@
 // This file is intended to be used for public-facing Firebase credentials.
 // Security is handled by Firebase Security Rules and App Check.
-
 export const firebaseConfig = {
   apiKey: "AIzaSyD6KBCNa3Q3qXxeMBsrNp4FR71QFZmXHAM",
   authDomain: "getyourtrials.firebaseapp.com",
