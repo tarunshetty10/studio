@@ -9,7 +9,7 @@
  */
 
 import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
+import {z} from 'zod';
 
 const AnswerHelpQuestionInputSchema = z.object({
   question: z.string().describe('The user\'s question about the website.'),
