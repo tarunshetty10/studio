@@ -98,18 +98,3 @@ export async function logoutUser() {
     return { success: false, error: (e as Error).message };
   }
 }
-
-export async function getUserData(uid: string) {
-  try {
-    const q = query(collection(db, "users"), where("uid", "==", uid), limit(1));
-    const querySnapshot = await getDocs(q);
-    if (querySnapshot.empty) {
-      return { success: false, error: "User not found" };
-    }
-    const userData = querySnapshot.docs[0].data();
-    return { success: true, data: userData };
-  } catch (e) {
-    console.error("Error fetching user data: ", e);
-    return { success: false, error: (e as Error).message };
-  }
-}
