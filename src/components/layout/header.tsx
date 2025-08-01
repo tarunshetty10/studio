@@ -2,10 +2,15 @@
 
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
-import { Menu, Trophy } from "lucide-react";
+import { Menu, Trophy, LogOut } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/context/auth-context";
+import ProfileButton from "./profile-button";
+import { Skeleton } from "../ui/skeleton";
+import { signOut } from "firebase/auth";
+import { auth } from "@/lib/firebase";
 
 const navLinks = [
     { href: "/", label: "Home" },
@@ -16,6 +21,73 @@ const navLinks = [
 
 export default function Header() {
   const pathname = usePathname();
+  const router = useRouter();
+  const { user, loading } = useAuth();
+
+  const handleLogout = async () => {
+    await signOut(auth);
+    router.push('/');
+  };
+
+  const renderAuthButtons = () => {
+    if (loading) {
+      return (
+        <div className="flex items-center gap-4">
+          <Skeleton className="h-10 w-20" />
+          <Skeleton className="h-10 w-20" />
+        </div>
+      );
+    }
+
+    if (user) {
+      return <ProfileButton />;
+    }
+
+    return (
+      <>
+        <Button variant="ghost" asChild>
+          <Link href="/login" className="hover:text-glow">Login</Link>
+        </Button>
+        <Button asChild>
+          <Link href="/signup" className="hover:text-glow">Sign Up</Link>
+        </Button>
+      </>
+    );
+  };
+  
+  const renderMobileAuthButtons = () => {
+    if (loading) {
+      return (
+        <div className="flex flex-col gap-4 mt-auto">
+          <Skeleton className="h-10 w-full" />
+          <Skeleton className="h-10 w-full" />
+        </div>
+      );
+    }
+    if (user) {
+      return (
+        <div className="flex flex-col gap-4 mt-auto">
+          <Button asChild>
+            <Link href="/profile">Profile</Link>
+          </Button>
+          <Button variant="secondary" onClick={handleLogout}>
+            <LogOut className="mr-2 h-4 w-4" />
+            Logout
+          </Button>
+        </div>
+      );
+    }
+    return (
+      <div className="flex flex-col gap-4 mt-auto">
+        <Button asChild>
+          <Link href="/login">Login</Link>
+        </Button>
+        <Button variant="secondary" asChild>
+          <Link href="/signup">Sign Up</Link>
+        </Button>
+      </div>
+    );
+  };
 
   return (
     <header className="bg-background/80 backdrop-blur-sm sticky top-0 z-40 border-b">
@@ -39,12 +111,7 @@ export default function Header() {
           ))}
         </nav>
         <div className="hidden md:flex items-center gap-4">
-            <Button variant="ghost" asChild>
-                <Link href="/login" className="hover:text-glow">Login</Link>
-            </Button>
-            <Button asChild>
-                <Link href="/signup" className="hover:text-glow">Sign Up</Link>
-            </Button>
+          {renderAuthButtons()}
         </div>
         <div className="md:hidden">
           <Sheet>
@@ -55,9 +122,8 @@ export default function Header() {
               </Button>
             </SheetTrigger>
             <SheetContent side="left">
-              <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
-              <div className="flex flex-col gap-6 p-6">
-                <Link href="/" className="flex items-center gap-2 font-bold text-lg">
+              <div className="flex flex-col h-full p-6">
+                <Link href="/" className="flex items-center gap-2 font-bold text-lg mb-6">
                   <Trophy className="h-6 w-6 text-primary" />
                   <span className="font-headline text-glow">GetYourTrials</span>
                 </Link>
@@ -75,14 +141,7 @@ export default function Header() {
                     </Link>
                   ))}
                 </nav>
-                <div className="flex flex-col gap-4 mt-auto">
-                    <Button asChild>
-                        <Link href="/login">Login</Link>
-                    </Button>
-                    <Button variant="secondary" asChild>
-                        <Link href="/signup">Sign Up</Link>
-                    </Button>
-                </div>
+                {renderMobileAuthButtons()}
               </div>
             </SheetContent>
           </Sheet>
