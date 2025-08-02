@@ -13,6 +13,8 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { UserPlus, Eye, EyeOff } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { signupUser } from "@/app/actions";
+import { useRouter } from "next/navigation";
 import {
   Form,
   FormControl,
@@ -21,9 +23,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useRouter } from 'next/navigation';
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import { auth } from '@/lib/firebase';
 
 const signupSchema = z
   .object({
@@ -65,30 +64,19 @@ export default function SignupForm() {
   });
 
   const onSubmit: SubmitHandler<SignupFormValues> = async (data) => {
-    try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        data.email,
-        data.password
-      );
-      const user = userCredential.user;
-      await updateProfile(user, {
-        displayName: `${data.firstName} ${data.lastName}`,
-        phoneNumber: data.phone,
-      });
-
+    const result = await signupUser(data);
+    if (result.success) {
       toast({
         title: "Account Created!",
-        description: "Welcome to GetYourTrials!",
+        description: "Welcome to GetYourTrials! Please log in.",
       });
-      router.push('/');
-    } catch (error) {
+      router.push("/login");
+    } else {
       toast({
-        title: "Sign-up Failed",
-        description: (error as Error).message,
+        title: "Signup Failed",
+        description: result.error,
         variant: "destructive",
       });
-      console.error(error);
     }
   };
 

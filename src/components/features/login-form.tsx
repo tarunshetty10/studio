@@ -14,10 +14,8 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { User, Eye, EyeOff } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { useRouter } from 'next/navigation';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '@/lib/firebase';
-
+import { loginUser } from "@/app/actions";
+import { useRouter } from "next/navigation";
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -41,20 +39,19 @@ export default function LoginForm() {
   });
 
   const onSubmit: SubmitHandler<LoginFormValues> = async (data) => {
-    try {
-      await signInWithEmailAndPassword(auth, data.email, data.password);
+    const result = await loginUser(data);
+    if (result.success) {
       toast({
         title: "Login Successful!",
         description: "Welcome back!",
       });
-      router.push('/');
-    } catch (error) {
+      router.push("/");
+    } else {
       toast({
         title: "Login Failed",
-        description: "Invalid email or password. Please try again.",
+        description: result.error,
         variant: "destructive",
       });
-      console.error(error);
     }
   };
 
