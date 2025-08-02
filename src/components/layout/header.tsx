@@ -41,7 +41,6 @@ export default function Header() {
     return email.substring(0, 2).toUpperCase();
   };
 
-
   return (
     <header className="bg-background/80 backdrop-blur-sm sticky top-0 z-40 border-b">
       <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
@@ -112,9 +111,8 @@ export default function Header() {
               </Button>
             </SheetTrigger>
             <SheetContent side="left">
-              <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
-              <div className="flex flex-col gap-6 p-6">
-                <Link href="/" className="flex items-center gap-2 font-bold text-lg">
+              <div className="flex flex-col h-full p-6">
+                <Link href="/" className="flex items-center gap-2 font-bold text-lg mb-6">
                   <Trophy className="h-6 w-6 text-primary" />
                   <span className="font-headline text-glow">GetYourTrials</span>
                 </Link>

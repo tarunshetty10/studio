@@ -9,7 +9,7 @@
  */
 
 import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
+import {z} from 'zod';
 
 const PersonalizedMarketingContentInputSchema = z.object({
   userGoals: z.string().describe('The stated goals of the user.'),
