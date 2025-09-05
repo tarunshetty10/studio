@@ -15,10 +15,10 @@ const firebaseConfig = {
 // Initialize Firebase
 let app;
 if (!getApps().length) {
-    if (firebaseConfig.apiKey) {
+    if (firebaseConfig.apiKey && firebaseConfig.apiKey !== "your-api-key-here") {
         app = initializeApp(firebaseConfig);
     } else {
-        console.error("Firebase API key is missing. Please check your environment variables.");
+        console.warn("Firebase is not configured. Please update your environment variables in .env.local with your Firebase project settings.");
     }
 } else {
     app = getApp();
