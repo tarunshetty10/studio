@@ -66,6 +66,14 @@ export default function SignupForm() {
 
   const onSubmit: SubmitHandler<SignupFormValues> = async (data) => {
     try {
+      if (!auth) {
+        toast({
+          title: "Sign-up Failed",
+          description: "Firebase is not configured. Please set environment variables and reload.",
+          variant: "destructive",
+        });
+        return;
+      }
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         data.email,

@@ -20,10 +20,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Separator } from "@/components/ui/separator";
-import { registerAthlete } from "@/app/actions";
-import React, { useState } from "react";
+// Client-side write to Firestore using authenticated user context
+import React, { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { auth } from "@/lib/firebase";
+import { useSearchParams } from "next/navigation";
+import { auth, db } from "@/lib/firebase";
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
+import { getClubById } from "@/data/clubs";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -47,6 +50,7 @@ const athleteSchema = z.object({
   achievements: z.string().optional(),
   about: z.string().optional(),
   youtubeUrl: z.string().url("Please enter a valid URL").optional().or(z.literal('')),
+  clubId: z.string().optional(),
 });
 
 type AthleteFormValues = z.infer<typeof athleteSchema>;
@@ -55,6 +59,9 @@ export default function AthleteRegistrationForm() {
   const { toast } = useToast();
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [showAuthDialog, setShowAuthDialog] = useState(false);
+  const searchParams = useSearchParams();
+  const preselectedClubId = useMemo(() => searchParams?.get("clubId") ?? null, [searchParams]);
+  const preselectedClub = useMemo(() => preselectedClubId ? getClubById(Number(preselectedClubId)) : undefined, [preselectedClubId]);
   const form = useForm<AthleteFormValues>({
     resolver: zodResolver(athleteSchema),
     defaultValues: {
@@ -69,33 +76,61 @@ export default function AthleteRegistrationForm() {
       achievements: "",
       about: "",
       youtubeUrl: "",
+      clubId: preselectedClubId ?? undefined,
     },
   });
 
+  useEffect(() => {
+    if (preselectedClub) {
+      form.reset({
+        ...form.getValues(),
+        primarySport: preselectedClub.sport.toLowerCase(),
+        clubId: String(preselectedClub.id),
+      });
+    }
+  }, [preselectedClub, form]);
+
   const handleRegistrationSubmit = async (data: AthleteFormValues) => {
-    const result = await registerAthlete(data);
-    if (result.success) {
+    if (!auth || !db) {
+      toast({
+        title: "Registration Failed",
+        description: "App not initialized. Please refresh and try again.",
+        variant: "destructive",
+      });
+      return;
+    }
+    const currentUser = auth.currentUser;
+    if (!currentUser) {
+      setShowAuthDialog(true);
+      return;
+    }
+    try {
+      const athleteDocRef = doc(db, "athletes", currentUser.uid);
+      await setDoc(athleteDocRef, {
+        ...data,
+        clubId: data.clubId || preselectedClubId || undefined,
+        uid: currentUser.uid,
+        email: data.email || currentUser.email || "",
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
+      }, { merge: true });
+
       toast({
         title: "Registration Submitted!",
-        description: "Your profile has been saved. We'll be in touch!",
+        description: "Your profile has been saved.",
       });
       form.reset();
       setIsSubmitted(true);
-    } else {
+    } catch (error: any) {
       toast({
         title: "Registration Failed",
-        description: result.error,
+        description: error?.message || "Missing or insufficient permissions.",
         variant: "destructive",
       });
     }
   };
 
   const onSubmit: SubmitHandler<AthleteFormValues> = (data) => {
-    const currentUser = auth.currentUser;
-    if (!currentUser) {
-      setShowAuthDialog(true);
-      return;
-    }
     handleRegistrationSubmit(data);
   };
 
@@ -116,6 +151,11 @@ export default function AthleteRegistrationForm() {
             </CardDescription>
           </CardHeader>
           <CardContent>
+            {preselectedClub && (
+              <div className="mb-6 rounded-md border p-3 text-sm text-muted-foreground">
+                Applying for trials at: <span className="font-medium">{preselectedClub.name}</span>
+              </div>
+            )}
             {isSubmitted ? (
               <div className="text-center flex flex-col items-center gap-4 py-8">
                   <CheckCircle className="w-16 h-16 text-green-500" />

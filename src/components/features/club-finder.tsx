@@ -23,6 +23,8 @@ import {
     FormLabel,
 } from "@/components/ui/form";
 import Image from "next/image";
+import Link from "next/link";
+import { clubs as sharedClubs } from "@/data/clubs";
 
 const searchSchema = z.object({
   sport: z.string().min(1, "Please select a sport"),
@@ -31,48 +33,14 @@ const searchSchema = z.object({
 
 type SearchFormValues = z.infer<typeof searchSchema>;
 
-const mockClubs = [
-  {
-    id: 1,
-    name: "Elite Football Academy",
-    logo: "https://placehold.co/100x100.png",
-    sport: "Football",
-    location: "Mumbai, Maharashtra",
-    verified: true,
-  },
-  {
-    id: 2,
-    name: "Hoops Dynasty",
-    logo: "https://placehold.co/100x100.png",
-    sport: "Basketball",
-    location: "Mumbai, Maharashtra",
-    verified: true,
-  },
-  {
-    id: 3,
-    name: "Racquet Masters",
-    logo: "https://placehold.co/100x100.png",
-    sport: "Tennis",
-    location: "Mumbai, Maharashtra",
-    verified: false,
-  },
-  {
-    id: 4,
-    name: "Cricket Champions",
-    logo: "https://placehold.co/100x100.png",
-    sport: "Cricket",
-    location: "Mumbai, Maharashtra",
-    verified: true,
-  },
-  {
-    id: 5,
-    name: "Mumbai City FC Youth",
-    logo: "https://placehold.co/100x100.png",
-    sport: "Football",
-    location: "Mumbai, Maharashtra",
-    verified: true,
-  },
-];
+const mockClubs = sharedClubs.map(c => ({
+  id: c.id,
+  name: c.name,
+  logo: c.logo,
+  sport: c.sport,
+  location: c.location,
+  verified: c.verified,
+}));
 
 export default function ClubFinder() {
   const [foundClubs, setFoundClubs] = useState<typeof mockClubs>([]);
@@ -176,7 +144,9 @@ export default function ClubFinder() {
                   </div>
                 </CardHeader>
                 <CardContent>
-                    <Button className="w-full">View Details</Button>
+                    <Button asChild className="w-full">
+                      <Link href={`/clubs/${club.id}`}>View Details</Link>
+                    </Button>
                 </CardContent>
               </Card>
             ))}

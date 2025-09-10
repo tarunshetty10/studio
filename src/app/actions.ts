@@ -21,7 +21,21 @@ import { collection, addDoc } from "firebase/firestore";
 export async function generateMotivationalQuote(
   input: MotivationalQuoteInput
 ): Promise<MotivationalQuoteOutput> {
-  return await generateMotivationalQuoteFlow(input);
+  const key = process.env.GOOGLE_GENAI_API_KEY
+    || process.env.NEXT_PUBLIC_GOOGLE_GENAI_API_KEY
+    || process.env.NEXT_PUBLIC_GEMINI_API_KEY
+    || process.env.GEMINI_API_KEY;
+
+  if (!key) {
+    throw new Error("Gemini API key is missing. Set GOOGLE_GENAI_API_KEY in your environment.");
+  }
+
+  try {
+    return await generateMotivationalQuoteFlow(input);
+  } catch (err: any) {
+    console.error("generateMotivationalQuote failed:", err?.message || err);
+    throw new Error("Quote generation failed. Please try again later.");
+  }
 }
 
 export async function personalizeMarketingContent(
