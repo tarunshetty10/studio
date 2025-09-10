@@ -21,9 +21,10 @@ import {
 } from "@/components/ui/form";
 import { Separator } from "@/components/ui/separator";
 import { registerAthlete } from "@/app/actions";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { auth } from "@/lib/firebase";
+import { getAuth, onAuthStateChanged, User as FirebaseUser } from "firebase/auth";
+import { app } from "@/lib/firebase";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -55,6 +56,17 @@ export default function AthleteRegistrationForm() {
   const { toast } = useToast();
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [showAuthDialog, setShowAuthDialog] = useState(false);
+  const [currentUser, setCurrentUser] = useState<FirebaseUser | null>(null);
+
+  useEffect(() => {
+    const auth = getAuth(app);
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user);
+    });
+    return () => unsubscribe();
+  }, []);
+
+
   const form = useForm<AthleteFormValues>({
     resolver: zodResolver(athleteSchema),
     defaultValues: {
@@ -91,7 +103,6 @@ export default function AthleteRegistrationForm() {
   };
 
   const onSubmit: SubmitHandler<AthleteFormValues> = (data) => {
-    const currentUser = auth.currentUser;
     if (!currentUser) {
       setShowAuthDialog(true);
       return;

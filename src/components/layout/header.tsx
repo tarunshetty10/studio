@@ -1,16 +1,18 @@
+
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, Trophy, LogOut } from "lucide-react";
+import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
+import { Menu, Trophy, User as UserIcon } from "lucide-react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { useAuth } from "@/context/auth-context";
-import ProfileButton from "./profile-button";
-import { Skeleton } from "../ui/skeleton";
-import { signOut } from "firebase/auth";
+import { useEffect, useState } from "react";
+import { onAuthStateChanged, User } from "firebase/auth";
 import { auth } from "@/lib/firebase";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { logoutUser } from "@/app/actions";
 
 const navLinks = [
     { href: "/", label: "Home" },
@@ -21,72 +23,22 @@ const navLinks = [
 
 export default function Header() {
   const pathname = usePathname();
-  const router = useRouter();
-  const { user, loading } = useAuth();
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+    return () => unsubscribe();
+  }, []);
 
   const handleLogout = async () => {
-    await signOut(auth);
-    router.push('/');
+    await logoutUser();
   };
 
-  const renderAuthButtons = () => {
-    if (loading) {
-      return (
-        <div className="flex items-center gap-4">
-          <Skeleton className="h-10 w-20" />
-          <Skeleton className="h-10 w-20" />
-        </div>
-      );
-    }
-
-    if (user) {
-      return <ProfileButton />;
-    }
-
-    return (
-      <>
-        <Button variant="ghost" asChild>
-          <Link href="/login" className="hover:text-glow">Login</Link>
-        </Button>
-        <Button asChild>
-          <Link href="/signup" className="hover:text-glow">Sign Up</Link>
-        </Button>
-      </>
-    );
-  };
-  
-  const renderMobileAuthButtons = () => {
-    if (loading) {
-      return (
-        <div className="flex flex-col gap-4 mt-auto">
-          <Skeleton className="h-10 w-full" />
-          <Skeleton className="h-10 w-full" />
-        </div>
-      );
-    }
-    if (user) {
-      return (
-        <div className="flex flex-col gap-4 mt-auto">
-          <Button asChild>
-            <Link href="/profile">Profile</Link>
-          </Button>
-          <Button variant="secondary" onClick={handleLogout}>
-            <LogOut className="mr-2 h-4 w-4" />
-            Logout
-          </Button>
-        </div>
-      );
-    }
-    return (
-      <div className="flex flex-col gap-4 mt-auto">
-        <Button asChild>
-          <Link href="/login">Login</Link>
-        </Button>
-        <Button variant="secondary" asChild>
-          <Link href="/signup">Sign Up</Link>
-        </Button>
-      </div>
-    );
+  const getInitials = (email: string | null | undefined) => {
+    if (!email) return 'U';
+    return email.substring(0, 2).toUpperCase();
   };
 
   return (
@@ -111,7 +63,44 @@ export default function Header() {
           ))}
         </nav>
         <div className="hidden md:flex items-center gap-4">
-          {renderAuthButtons()}
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                    <Avatar className="h-8 w-8">
+                       <AvatarFallback className="bg-primary text-primary-foreground">{getInitials(user.email)}</AvatarFallback>
+                    </Avatar>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56" align="end" forceMount>
+                  <DropdownMenuLabel className="font-normal">
+                    <div className="flex flex-col space-y-1">
+                      <p className="text-sm font-medium leading-none">My Account</p>
+                      <p className="text-xs leading-none text-muted-foreground">
+                        {user.email}
+                      </p>
+                    </div>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>
+                    Settings
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleLogout}>
+                    Log out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <>
+                <Button variant="ghost" asChild>
+                    <Link href="/login" className="hover:text-glow">Login</Link>
+                </Button>
+                <Button asChild>
+                    <Link href="/signup" className="hover:text-glow">Sign Up</Link>
+                </Button>
+              </>
+            )}
         </div>
         <div className="md:hidden">
           <Sheet>
@@ -141,7 +130,28 @@ export default function Header() {
                     </Link>
                   ))}
                 </nav>
-                {renderMobileAuthButtons()}
+                <div className="flex flex-col gap-4 mt-auto">
+                    {user ? (
+                       <div className="flex items-center gap-4">
+                         <Avatar>
+                           <AvatarFallback className="bg-primary text-primary-foreground">{getInitials(user.email)}</AvatarFallback>
+                         </Avatar>
+                         <div className="flex flex-col">
+                            <span className="text-sm font-medium">{user.email}</span>
+                            <Button variant="link" className="p-0 h-auto justify-start" onClick={handleLogout}>Logout</Button>
+                         </div>
+                       </div>
+                    ) : (
+                      <>
+                        <Button asChild>
+                            <Link href="/login">Login</Link>
+                        </Button>
+                        <Button variant="secondary" asChild>
+                            <Link href="/signup">Sign Up</Link>
+                        </Button>
+                      </>
+                    )}
+                </div>
               </div>
             </SheetContent>
           </Sheet>
