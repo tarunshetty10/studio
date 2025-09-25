@@ -1,0 +1,51 @@
+// firestore.rules
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isSignedIn() { return request.auth != null; }
+    function isSelf(uid) { return isSignedIn() && request.auth.uid == uid; }
+
+    // Athlete profile (owned by the user)
+    match /athletes/{uid} {
+      // Only the owner can read/write their profile
+      allow read: if isSelf(uid);
+      allow create: if isSignedIn() && request.resource.data.uid == request.auth.uid;
+      allow update, delete: if isSelf(uid);
+
+      // Applications subcollection: athletes/{uid}/applications/{clubId}
+      match /applications/{clubId} {
+        // Owner can read/list their own applications
+        allow get, list: if isSelf(uid);
+
+        // Create: only the owner; basic field validation
+        allow create: if isSelf(uid)
+          && request.resource.data.athleteUid == uid
+          && request.resource.data.clubId is int
+          && request.resource.data.keys().hasAll(['clubId','clubName','athleteUid','status','createdAt','updatedAt']);
+
+        // Update/Delete: only the owner
+        allow update, delete: if isSelf(uid);
+      }
+    }
+
+    // Explicitly block any legacy top-level applications collection
+    match /applications/{docId} {
+      allow read, write: if false;
+    }
+
+    // Open unauthenticated submissions for these public forms
+    // NOTE: One collection name contains a space, so we use a wildcard and
+    // restrict by the captured collection name.
+    match /{openCol}/{docId} {
+      allow create: if openCol == "list-your-club" || openCol == "Athelets Wanted" || openCol == "login" || openCol == "sign in";
+      allow read: if openCol == "list-your-club" || openCol == "Athelets Wanted";
+    }
+
+    // Optional: public read-only data (if you add public docs)
+    match /public/{document=**} {
+      allow read: if true;
+    }
+  }
+}
+
+
