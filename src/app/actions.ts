@@ -16,6 +16,8 @@ import {
   type AnswerHelpQuestionOutput,
 } from '@/ai/flows/answer-help-question';
 import { db } from '@/lib/firebase';
+import { adminDb } from '@/lib/firebase-admin';
+import { sendAdminContactEmail } from '@/lib/mail';
 import { collection, addDoc } from "firebase/firestore"; 
 
 export async function generateMotivationalQuote(
@@ -66,8 +68,46 @@ export async function submitContactForm(contactData: any) {
     // Here you would typically send an email or save to a database.
     // For now, we'll just log it to the console.
     console.log("New contact form submission:", contactData);
-    const docRef = await addDoc(collection(db, "contacts"), contactData);
-    console.log("Contact form submission saved with ID: ", docRef.id);
+    let contactId: string | undefined = undefined;
+    const payload = { ...contactData, createdAt: new Date().toISOString() };
+    if (adminDb) {
+      const contactRef = await adminDb.collection("contacts").add(payload);
+      contactId = contactRef.id;
+      console.log("Contact form submission saved with ID (admin): ", contactId);
+      try {
+        await adminDb.collection("Customer Service").add({
+          ...contactData,
+          contactRefId: contactId,
+          createdAt: new Date().toISOString(),
+        });
+      } catch (csErr) {
+        console.warn("Failed to write to 'Customer Service' (admin):", (csErr as any)?.message || csErr);
+      }
+    } else {
+      const docRef = await addDoc(collection(db, "contacts"), payload);
+      contactId = docRef.id;
+      console.log("Contact form submission saved with ID: ", contactId);
+      // Also save into Customer Service collection for admin workflows
+      try {
+        await addDoc(collection(db, "Customer Service"), {
+          ...contactData,
+          contactRefId: contactId,
+          createdAt: new Date().toISOString(),
+        });
+      } catch (csErr) {
+        console.warn("Failed to write to 'Customer Service' collection:", (csErr as any)?.message || csErr);
+      }
+    }
+    // Attempt email notification (non-blocking failure)
+    try {
+      await sendAdminContactEmail({
+        name: contactData.name,
+        email: contactData.email,
+        message: contactData.message,
+      });
+    } catch (mailErr) {
+      console.warn("Contact email notification failed:", (mailErr as any)?.message || mailErr);
+    }
     return { success: true };
   } catch (e) {
     console.error("Error submitting contact form: ", e);

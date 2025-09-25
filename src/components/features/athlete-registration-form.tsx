@@ -106,14 +106,19 @@ export default function AthleteRegistrationForm() {
     }
     try {
       const athleteDocRef = doc(db, "athletes", currentUser.uid);
-      await setDoc(athleteDocRef, {
-        ...data,
-        clubId: data.clubId || preselectedClubId || undefined,
+      const computedClubId = data.clubId || (preselectedClubId ? String(preselectedClubId) : undefined);
+      const { clubId: _ignoredClubId, ...dataWithoutClubId } = data;
+      const payload: any = {
+        ...dataWithoutClubId,
         uid: currentUser.uid,
         email: data.email || currentUser.email || "",
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
-      }, { merge: true });
+      };
+      if (computedClubId !== undefined && computedClubId !== "") {
+        payload.clubId = computedClubId;
+      }
+      await setDoc(athleteDocRef, payload, { merge: true });
 
       toast({
         title: "Registration Submitted!",

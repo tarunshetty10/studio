@@ -20,13 +20,19 @@ export default function MotivationalQuote() {
     setIsLoading(true);
     setQuote("");
     try {
-      const result = await generateMotivationalQuote({ topic });
+      const res = await fetch('/api/ai/quote', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ topic }),
+      });
+      const result = await res.json();
+      if (!res.ok) throw new Error(result?.error || 'Failed to generate');
       setQuote(result.quote);
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
       toast({
         title: "Error",
-        description: "Failed to generate a quote. Please try again.",
+        description: error?.message || "Failed to generate a quote. Please try again.",
         variant: "destructive",
       });
     } finally {

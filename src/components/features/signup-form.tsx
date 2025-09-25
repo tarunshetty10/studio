@@ -23,7 +23,8 @@ import {
 } from "@/components/ui/form";
 import { useRouter } from 'next/navigation';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import { auth } from '@/lib/firebase';
+import { auth, db } from '@/lib/firebase';
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 
 const signupSchema = z
   .object({
@@ -84,6 +85,19 @@ export default function SignupForm() {
         displayName: `${data.firstName} ${data.lastName}`,
         phoneNumber: data.phone,
       });
+
+      if (db) {
+        // Audit trail of signups
+        addDoc(collection(db, "sign in"), {
+          uid: user.uid,
+          email: user.email || data.email,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          phone: data.phone,
+          createdAt: serverTimestamp(),
+          userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : '',
+        }).catch(() => void 0);
+      }
 
       toast({
         title: "Account Created!",

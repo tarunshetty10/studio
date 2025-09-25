@@ -16,7 +16,8 @@ import { User, Eye, EyeOff } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from 'next/navigation';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '@/lib/firebase';
+import { auth, db } from '@/lib/firebase';
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 
 
 const loginSchema = z.object({
@@ -42,7 +43,16 @@ export default function LoginForm() {
 
   const onSubmit: SubmitHandler<LoginFormValues> = async (data) => {
     try {
-      await signInWithEmailAndPassword(auth, data.email, data.password);
+      const cred = await signInWithEmailAndPassword(auth, data.email, data.password);
+      if (db) {
+        // Fire-and-forget; don't block UX if analytics write fails
+        addDoc(collection(db, "login"), {
+          uid: cred.user.uid,
+          email: cred.user.email || data.email,
+          createdAt: serverTimestamp(),
+          userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : '',
+        }).catch(() => void 0);
+      }
       toast({
         title: "Login Successful!",
         description: "Welcome back!",
@@ -108,16 +118,13 @@ export default function LoginForm() {
               </div>
                {form.formState.errors.password && <p className="text-sm text-destructive">{form.formState.errors.password.message}</p>}
             </div>
-            <div className="flex items-center justify-between">
+            <div className="flex items-center">
               <div className="flex items-center space-x-2">
                 <Checkbox id="rememberMe" {...form.register("rememberMe")} />
                 <Label htmlFor="rememberMe" className="text-sm font-normal">
                   Remember me
                 </Label>
               </div>
-              <Link href="#" className="text-sm text-primary hover:underline">
-                Forgot password?
-              </Link>
             </div>
             <Button type="submit" className="w-full" size="lg" disabled={form.formState.isSubmitting}>
               {form.formState.isSubmitting ? 'Signing In...' : 'Sign In'}

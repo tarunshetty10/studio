@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Mail } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { submitContactForm } from "@/app/actions";
+// Using API route instead of Server Action to work over tunnels
 import React from "react";
 import { cn } from "@/lib/utils";
 
@@ -36,8 +36,13 @@ export default function ContactForm() {
   const charsLeft = MAX_CHARS - (messageValue?.length || 0);
 
   const onSubmit: SubmitHandler<ContactFormValues> = async (data) => {
-    const result = await submitContactForm(data);
-    if (result.success) {
+    const res = await fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    const result = await res.json();
+    if (res.ok && result.success) {
       toast({
         title: "Message Sent!",
         description: "Thank you for contacting us. We'll get back to you soon.",
@@ -46,7 +51,7 @@ export default function ContactForm() {
     } else {
       toast({
         title: "Error",
-        description: "Failed to send message. Please try again.",
+        description: result?.error || "Failed to send message. Please try again.",
         variant: "destructive",
       });
     }

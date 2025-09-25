@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { Rocket, Settings, MessageSquareQuote, Briefcase, Search, Loader2 } from 'lucide-react';
-import { answerHelpQuestion } from '@/app/actions';
+// Switched to API route to avoid Server Actions issues behind tunnels
 import { useToast } from '@/hooks/use-toast';
 
 const searchSchema = z.object({
@@ -67,7 +67,13 @@ export default function HelpCenter() {
     setIsLoading(true);
     setAnswer("");
     try {
-      const result = await answerHelpQuestion({ question: data.query });
+      const res = await fetch('/api/ai/help', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question: data.query }),
+      });
+      const result = await res.json();
+      if (!res.ok) throw new Error(result?.error || 'Failed to get answer');
       setAnswer(result.answer);
     } catch (error) {
       console.error(error);

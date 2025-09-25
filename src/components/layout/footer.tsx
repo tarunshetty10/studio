@@ -20,15 +20,13 @@ export default function Footer() {
             <ul className="space-y-2">
               <li><Link href="/athletes" className="text-sm hover:underline text-muted-foreground transition-colors hover:text-foreground">Create Profile</Link></li>
               <li><Link href="/clubs" className="text-sm hover:underline text-muted-foreground transition-colors hover:text-foreground">Find Clubs</Link></li>
-              <li><Link href="#" className="text-sm hover:underline text-muted-foreground transition-colors hover:text-foreground">Apply for Trials</Link></li>
             </ul>
           </div>
           <div className="col-span-1">
             <h3 className="font-bold mb-4 font-headline">For Clubs</h3>
             <ul className="space-y-2">
-              <li><Link href="#" className="text-sm hover:underline text-muted-foreground transition-colors hover:text-foreground">List Your Club</Link></li>
-              <li><Link href="#" className="text-sm hover:underline text-muted-foreground transition-colors hover:text-foreground">Find Athletes</Link></li>
-              <li><Link href="#" className="text-sm hover:underline text-muted-foreground transition-colors hover:text-foreground">Manage Trials</Link></li>
+              <li><Link href="/clubs/list-your-club" className="text-sm hover:underline text-muted-foreground transition-colors hover:text-foreground">List Your Club</Link></li>
+              <li><Link href="/clubs/find-athletes" className="text-sm hover:underline text-muted-foreground transition-colors hover:text-foreground">Find Athletes</Link></li>
             </ul>
           </div>
           <div className="col-span-1">
